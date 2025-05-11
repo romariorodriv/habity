@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Habity - Ayuda de la IA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: #007BFF;
+    }
+
+    header nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      resize: none;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .respuesta-ia {
+      margin-top: 30px;
+      background: #f7f9fc;
+      border-left: 5px solid #007BFF;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #444;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Habity</div>
+  <nav>
+    <a href="index.html">🏠 Volver al Dashboard</a>
+  </nav>
+</header>
+
+<main>
+  <h1>🤖 Ayuda de la IA</h1>
+  <form id="aiForm">
+    <label for="descripcion">¿Qué pasó hoy que no lograste cumplir tu hábito?</label>
+    <textarea id="descripcion" placeholder="Escribe lo que ocurrió..."></textarea>
+    <button type="submit">Solicitar recomendación</button>
+  </form>
+
+  <div id="respuesta" class="respuesta-ia" style="display: none;"></div>
+</main>
+
+<script>
+  const form = document.getElementById('aiForm');
+  const respuesta = document.getElementById('respuesta');
+
+  const respuestasIA = [
+    "Recuerda que fallar un día no define tu camino. Mañana es otra oportunidad para empezar fuerte 💪.",
+    "¿Qué puedes cambiar mañana? Hazlo simple y empieza con solo 1 acción clave.",
+    "Divide tu hábito en partes más pequeñas. A veces menos es más para crear constancia.",
+    "¡Vamos, Romario! Tu constancia vale más que la perfección. Hazlo aunque sea solo 5 minutos.",
+    "Los días difíciles también suman si te levantas al día siguiente. Tú puedes, confía en el proceso."
+  ];
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const texto = document.getElementById('descripcion').value.trim();
+    if (!texto) return;
+
+    const respuestaRandom = respuestasIA[Math.floor(Math.random() * respuestasIA.length)];
+    respuesta.innerText = respuestaRandom;
+    respuesta.style.display = 'block';
+    form.reset();
+  });
+</script>
+
+</body>
+</html>

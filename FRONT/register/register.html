@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Habity</title>
+  <link rel="stylesheet" href="./register.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>Crear cuenta</h1>
+    <form id="registro-form">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="Tu correo" required>
+
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+      
+      <ul id="password-rules">
+        <li id="rule-length">🔴 Mínimo 10 caracteres</li>
+        <li id="rule-uppercase">🔴 Al menos una letra mayúscula</li>
+        <li id="rule-lowercase">🔴 Al menos una letra minúscula</li>
+        <li id="rule-number">🔴 Al menos un número</li>
+        <li id="rule-special">🔴 Al menos un carácter especial</li>
+      </ul>
+
+      <label for="edad">Edad</label>
+      <input type="number" id="edad" name="edad" placeholder="Tu edad" required>
+
+      <label for="peso">Peso (kg)</label>
+      <input type="number" id="peso" name="peso" placeholder="Ej. 73" step="0.1" required>
+
+      <label for="altura">Altura (m)</label>
+      <input type="number" id="altura" name="altura" placeholder="Ej. 1.74" step="0.01" required>
+
+      <label for="imagenUrl">URL de imagen de perfil</label>
+      <input type="text" id="imagenUrl" name="imagenUrl" placeholder="https://...">
+
+      <button type="submit" class="btn-primary">Registrarse</button>
+    </form>
+    <p>¿Ya tienes una cuenta? <a href="inicio-sesion.html">Inicia sesión</a></p>
+  </div>
+
+  <script>
+    document.getElementById("registro-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const edad = document.getElementById("edad").value;
+      const peso = document.getElementById("peso").value;
+      const altura = document.getElementById("altura").value;
+      const imagenUrl = document.getElementById("imagenUrl").value;
+
+      try {
+        const response = await fetch("http://localhost:8080/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ nombre, email, password, edad, peso, altura, imagenUrl })
+        });
+
+        if (response.ok) {
+          alert("Usuario registrado exitosamente 🎉");
+          window.location.href = "login.html";
+        } else {
+          const errorText = await response.text();
+          alert("Error: " + errorText);
+        }
+      } catch (error) {
+        alert("Error de conexión con el servidor");
+        console.error(error);
+      }
+    });
+
+    const passwordInput = document.getElementById("password");
+    const ruleLength = document.getElementById("rule-length");
+    const ruleUpper = document.getElementById("rule-uppercase");
+    const ruleLower = document.getElementById("rule-lowercase");
+    const ruleNumber = document.getElementById("rule-number");
+    const ruleSpecial = document.getElementById("rule-special");
+
+    passwordInput.addEventListener("input", () => {
+      const value = passwordInput.value;
+
+      toggleRule(ruleLength, value.length >= 10);
+      toggleRule(ruleUpper, /[A-Z]/.test(value));
+      toggleRule(ruleLower, /[a-z]/.test(value));
+      toggleRule(ruleNumber, /[0-9]/.test(value));
+      toggleRule(ruleSpecial, /[!@#$%^&*(),.?":{}|<>]/.test(value));
+    });
+
+    function toggleRule(element, condition) {
+      element.textContent = (condition ? "🟢" : "🔴") + " " + element.textContent.slice(2);
+    }
+  </script>
+</body>
+</html>

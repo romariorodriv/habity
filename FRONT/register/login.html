@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Habity</title>
+  <link rel="stylesheet" href="./register.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <h1>Iniciar sesión</h1>
+    <form id="login-form">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="Tu correo" required>
+
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+
+      <button type="submit" class="btn-primary">Iniciar sesión</button>
+    </form>
+    <p>¿No tienes una cuenta? <a href="registro.html">Regístrate</a></p>
+  </div>
+  <script>
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);        // Guarda el token JWT
+        localStorage.setItem("nombre", data.nombre);      // Guarda el nombre
+        localStorage.setItem("email", data.email);        // Guarda el correo
+
+        alert("Inicio de sesión exitoso 🎉");
+        window.location.href = "../dashboard/dashboard.html";          // Redirige al dashboard
+      } else {
+        const error = await response.text();
+        alert("Error: " + error);
+      }
+    });
+  </script>
+</body>
+
+</html>

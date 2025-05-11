@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Habity - Progreso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: #007BFF;
+    }
+
+    header nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #007BFF;
+      margin-bottom: 30px;
+    }
+
+    .habit-block {
+      margin-bottom: 60px;
+    }
+
+    .habit-block h2 {
+      font-size: 20px;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      margin-bottom: 30px;
+      background: #f7f9fc;
+      padding: 20px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Habity</div>
+  <nav>
+    <a href="index.html">🏠 Volver al Dashboard</a>
+  </nav>
+</header>
+
+<main>
+  <h1>📈 Progreso de tus hábitos</h1>
+
+  <!-- Hábito 1 -->
+  <div class="habit-block">
+    <h2>💧 Beber Agua</h2>
+    <canvas id="progreso1" height="200"></canvas>
+    <canvas id="caidas1" height="200"></canvas>
+  </div>
+
+  <!-- Hábito 2 -->
+  <div class="habit-block">
+    <h2>🏃 Correr</h2>
+    <canvas id="progreso2" height="200"></canvas>
+    <canvas id="caidas2" height="200"></canvas>
+  </div>
+
+  <!-- Hábito 3 -->
+  <div class="habit-block">
+    <h2>📚 Leer</h2>
+    <canvas id="progreso3" height="200"></canvas>
+    <canvas id="caidas3" height="200"></canvas>
+  </div>
+
+</main>
+
+<script>
+  const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+  const crearProgreso = (id, data) => {
+    new Chart(document.getElementById(id), {
+      type: 'bar',
+      data: {
+        labels: dias,
+        datasets: [{
+          label: 'Progreso semanal',
+          data: data,
+          backgroundColor: '#007BFF',
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true, max: 7 } }
+      }
+    });
+  };
+
+  const crearCaidas = (id, data) => {
+    new Chart(document.getElementById(id), {
+      type: 'line',
+      data: {
+        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+        datasets: [{
+          label: 'Caídas',
+          data: data,
+          borderColor: '#dc3545',
+          backgroundColor: '#dc3545',
+          fill: false,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true, max: 7 } }
+      }
+    });
+  };
+
+  // Datos simulados por hábito
+  crearProgreso('progreso1', [1, 1, 1, 1, 1, 0, 1]);
+  crearCaidas('caidas1', [1, 0, 2, 1]);
+
+  crearProgreso('progreso2', [0, 1, 0, 1, 1, 1, 1]);
+  crearCaidas('caidas2', [2, 1, 1, 0]);
+
+  crearProgreso('progreso3', [1, 1, 1, 0, 0, 1, 1]);
+  crearCaidas('caidas3', [0, 1, 2, 2]);
+</script>
+
+</body>
+</html>

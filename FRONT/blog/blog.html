@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Habity - Comunidad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: #007BFF;
+    }
+
+    header nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+
+    form {
+      margin-bottom: 40px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      resize: none;
+      font-size: 14px;
+    }
+
+    .type-select {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .type-select button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .type-logro {
+      background: #00c58e;
+      color: white;
+    }
+
+    .type-ayuda {
+      background: #dc3545;
+      color: white;
+    }
+
+    .type-comentario {
+      background: #007BFF;
+      color: white;
+    }
+
+    .submit-btn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .post {
+      background: #f7f9fc;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .post span.type {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .logro { background-color: #00c58e33; color: #00a373; }
+    .ayuda { background-color: #ffcccc; color: #b00020; }
+    .comentario { background-color: #cce5ff; color: #007BFF; }
+
+    .post p {
+      font-size: 15px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Habity</div>
+  <nav>
+    <a href="index.html">🏠 Volver al Dashboard</a>
+  </nav>
+</header>
+
+<main>
+  <h1>💬 Comunidad de hábitos</h1>
+
+  <form id="postForm">
+    <textarea id="postContent" placeholder="¿Qué quieres compartir hoy?"></textarea>
+
+    <div class="type-select">
+      <button type="button" class="type-logro" onclick="setType('logro')">✅ Cumplí mi hábito</button>
+      <button type="button" class="type-ayuda" onclick="setType('ayuda')">🆘 Necesito ayuda</button>
+      <button type="button" class="type-comentario" onclick="setType('comentario')">🗨️ Comentario</button>
+    </div>
+
+    <input type="hidden" id="postType" value="comentario">
+    <button type="submit" class="submit-btn">Publicar</button>
+  </form>
+
+  <div id="postsContainer">
+    <!-- Aquí se insertarán las publicaciones -->
+  </div>
+</main>
+
+<script>
+  const form = document.getElementById('postForm');
+  const postsContainer = document.getElementById('postsContainer');
+  let currentType = 'comentario';
+
+  function setType(type) {
+    currentType = type;
+    document.getElementById('postType').value = type;
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const content = document.getElementById('postContent').value.trim();
+    const type = document.getElementById('postType').value;
+
+    if (content === '') return;
+
+    const post = document.createElement('div');
+    post.classList.add('post');
+
+    const typeSpan = document.createElement('span');
+    typeSpan.classList.add('type', type);
+    typeSpan.textContent = type === 'logro' ? '✅ Logro' : type === 'ayuda' ? '🆘 Ayuda' : '🗨️ Comentario';
+
+    const message = document.createElement('p');
+    message.textContent = content;
+
+    post.appendChild(typeSpan);
+    post.appendChild(message);
+
+    postsContainer.prepend(post);
+    form.reset();
+    currentType = 'comentario';
+    document.getElementById('postType').value = 'comentario';
+  });
+</script>
+
+</body>
+</html>

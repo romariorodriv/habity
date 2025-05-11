@@ -1,0 +1,48 @@
+<!-- ver-habitos.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Hábitos</title>
+</head>
+<body>
+  <h1>Mis hábitos</h1>
+  <ul id="lista-habitos"></ul>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Inicia sesión primero.");
+        return window.location.href = "../register/login.html";
+      }
+  
+      const response = await fetch("http://localhost:8080/api/habitos", {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      });
+  
+      if (!response.ok) {
+        alert("Error cargando hábitos");
+        return;
+      }
+  
+      const data = await response.json();
+      const habitos = Array.isArray(data) ? data : Object.values(data); // 💥 fuerza array
+  
+      const lista = document.getElementById("lista-habitos");
+      lista.innerHTML = ""; // limpia antes de insertar
+  
+      habitos.forEach(h => {
+        if (h && h.nombre) {
+          const item = document.createElement("li");
+          item.textContent = `${h.nombre} - ${h.descripcion} (Frecuencia: ${h.frecuencia})`;
+          lista.appendChild(item);
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>

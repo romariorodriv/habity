@@ -1,0 +1,126 @@
+<!-- agregar-habito.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Agregar Hábito</title>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: #007BFF;
+    }
+
+    .main-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea,
+    select {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button.btn-primary {
+      background: #007BFF;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button.btn-primary:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Agregar nuevo hábito</h1>
+  <form id="habito-form">
+    <label>Nombre del hábito:</label><br>
+    <input type="text" id="nombre" required><br><br>
+
+    <label>Descripción:</label><br>
+    <textarea id="descripcion" rows="4" cols="30" required></textarea><br><br>
+
+    <label>Frecuencia (veces por semana):</label><br>
+    <input type="number" id="frecuencia" min="1" required><br><br>
+
+    <button type="submit">Crear hábito</button>
+  </form>
+
+  <script>
+    document.getElementById("habito-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Inicia sesión primero.");
+        return window.location.href = "login.html";
+      }
+
+      const nombre = document.getElementById("nombre").value;
+      const descripcion = document.getElementById("descripcion").value;
+      const frecuencia = document.getElementById("frecuencia").value;
+
+      const response = await fetch("http://localhost:8080/api/habitos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ nombre, descripcion, frecuencia })
+      });
+
+      if (response.ok) {
+        alert("Hábito creado correctamente");
+        window.location.href = "ver-habitos.html";
+      } else {
+        const error = await response.text();
+        alert("Error al crear hábito: " + error);
+      }
+    });
+  </script>
+</body>
+
+</html>

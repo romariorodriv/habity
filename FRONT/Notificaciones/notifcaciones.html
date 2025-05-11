@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habity - Notificaciones</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: #007BFF;
+    }
+
+    header nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #007BFF;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 30px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .form-note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Habity</div>
+  <nav>
+    <a href="index.html">🏠 Volver al Dashboard</a>
+  </nav>
+</header>
+
+<main>
+  <h1>📲 Configurar Notificación</h1>
+
+  <form>
+    <label for="habit-name">Nombre del Hábito</label>
+    <input type="text" id="habit-name" name="habit-name" placeholder="Ej. Beber agua">
+
+    <label for="time">Hora de Notificación</label>
+    <input type="time" id="time" name="time">
+
+    <label for="whatsapp">Número de WhatsApp</label>
+    <input type="tel" id="whatsapp" name="whatsapp" placeholder="+51 912345678">
+
+    <label for="email">Correo Electrónico</label>
+    <input type="email" id="email" name="email" placeholder="usuario@ejemplo.com">
+
+    <button type="submit">Guardar Notificación</button>
+    <p class="form-note">Recibirás un mensaje a la hora configurada con un recordatorio personalizado.</p>
+  </form>
+</main>
+
+</body>
+</html>

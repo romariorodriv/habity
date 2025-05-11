@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TwitterHabits</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .post {
+            background: white;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post .author {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .post .date {
+            color: gray;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>TwitterHabits 📝</h1>
+
+        <textarea id="contenido" placeholder="¿Qué hiciste hoy con tu hábito?"></textarea>
+        <button onclick="publicar()">Publicar</button>
+
+        <div id="publicaciones"></div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token");
+
+        async function cargarPublicaciones() {
+            const res = await fetch("http://localhost:8080/api/publicaciones", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+            const publicaciones = await res.json();
+
+            const container = document.getElementById("publicaciones");
+            container.innerHTML = "";
+
+            for (const pub of publicaciones) {
+                const likes = await fetch(`http://localhost:8080/api/publicaciones/${pub.id}/likes`, {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                }).then(r => r.json());
+
+                const dislikes = await fetch(`http://localhost:8080/api/publicaciones/${pub.id}/dislikes`, {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                }).then(r => r.json());
+                const div = document.createElement("div");
+                div.className = "post";
+                div.innerHTML = `
+      <div class="author">${pub.usuario.nombre}</div>
+      <div class="date">${new Date(pub.fechaCreacion).toLocaleString()}</div>
+      <div class="text">${pub.contenido}</div>
+      <button onclick="reaccionar(${pub.id}, true)">👍 ${likes}</button>
+      <button onclick="reaccionar(${pub.id}, false)">👎 ${dislikes}</button>
+    `;
+                container.appendChild(div);
+            }
+        }
+        function reaccionar(id, esLike) {
+            fetch(`http://localhost:8080/api/publicaciones/${id}/reaccion?like=${esLike}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }).then(cargarPublicaciones);
+        }
+
+        async function publicar() {
+            const contenido = document.getElementById("contenido").value.trim();
+            if (!contenido) return alert("Escribe algo antes de publicar.");
+
+            const res = await fetch("http://localhost:8080/api/publicaciones", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({ contenido })
+            });
+
+            if (res.ok) {
+                document.getElementById("contenido").value = "";
+                cargarPublicaciones();
+            } else {
+                alert("Error al publicar.");
+            }
+        }
+
+        // Cargar publicaciones al iniciar
+        cargarPublicaciones();
+    </script>
+</body>
+
+</html>
